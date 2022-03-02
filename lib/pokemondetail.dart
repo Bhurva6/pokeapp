@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:flutter/material.dart';
 import 'package:pokeapp/pokemon.dart';
 
@@ -61,7 +59,7 @@ class PokeDetail extends StatelessWidget {
                           .map((n) => FilterChip(
                               backgroundColor: Colors.green,
                               label: Text(
-                                n.name,
+                                n.name!,
                                 style: TextStyle(color: Colors.white),
                               ),
                               onSelected: (b) {}))
