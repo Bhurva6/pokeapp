@@ -1,8 +1,18 @@
+![image](https://user-images.githubusercontent.com/75015574/156382923-12f927cf-269d-4ec1-9caf-f9bcf37b485b.png)
+
 # pokeapp
 
-A new Flutter project.
+A flutter app that uses this API - https://pokeapi.co/ and displays a dashboard of pokemon and opens a page to show details about the pokemon like its previous evolution, next evolution, height, weight, etc. 
 
-## Getting Started
+![image](https://user-images.githubusercontent.com/75015574/156382511-967793e8-1340-48ed-ae9a-82ab73153824.png)
+
+
+### Screenshots 🖼️
+
+
+
+
+### Getting Started 🔧
 
 This project is a starting point for a Flutter application.
 
