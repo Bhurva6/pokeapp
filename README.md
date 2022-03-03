@@ -9,6 +9,9 @@ A flutter app that uses this API - https://pokeapi.co/ and displays a dashboard 
 
 ### Screenshots 🖼️
 
+![image](https://user-images.githubusercontent.com/75015574/156568555-4a7dabeb-a8d5-410d-87e5-d0fe8ed3f57b.png)
+![image](https://user-images.githubusercontent.com/75015574/156568592-38423125-cd08-40a2-85d6-718f65ed8320.png)
+
 
 
 
