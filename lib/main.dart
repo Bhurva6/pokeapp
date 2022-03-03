@@ -19,112 +19,80 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
-  var url =
-      "https://raw.githubusercontent.com/Biuni/PokemonGO-Pokedex/master/pokedex.json";
-
+  var url = Uri.parse(
+      "https://raw.githubusercontent.com/Biuni/PokemonGO-Pokedex/master/pokedex.json");
+  PokeHub? pokeHub;
   @override
   void initState() {
     super.initState();
-
     fetchData();
   }
 
-  Future<List<PokeHub>> fetchData() async {
-    PokeHub? pokeHub;
-    List<PokeHub> pokehublist = [];
-    var res = await http.get(Uri.parse(
-        "https://raw.githubusercontent.com/Biuni/PokemonGO-Pokedex/master/pokedex.json"));
+  var res;
+  void fetchData() async {
+    res = await http.get(url);
     var decodedJson = jsonDecode(res.body);
-    print(decodedJson);
-
-    for (var data in decodedJson["pokemon"] as List) {
-      pokeHub = PokeHub.fromJson(data);
-      pokehublist.add(pokeHub!);
-    }
-
-    return pokehublist;
+    pokeHub = PokeHub.fromJson(decodedJson);
+    print(pokeHub!.toJson());
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    var pokeHub;
+    // var pokeHub;
     return Scaffold(
-        appBar: AppBar(
-          title: Text("PokeApp"),
-          backgroundColor: Colors.cyan,
-        ),
-        body: FutureBuilder<List<PokeHub>>(
-          future: fetchData(),
-          builder: (context, snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.done:
-                {
-                  return GridView.count(
-                    crossAxisCount: 2,
-                    children: pokeHub.pokemon
-                        .map((poke) => Padding(
-                              padding: const EdgeInsets.all(2.0),
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => PokeDetail(
-                                                pokemon: poke,
-                                              )));
-                                },
-                                child: Hero(
-                                  tag: poke.img,
-                                  child: Card(
-                                    elevation: 3.0,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Container(
-                                          height: 100,
-                                          width: 100,
-                                          decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                  image:
-                                                      NetworkImage(poke.img))),
-                                        ),
-                                        Text(
-                                          poke.name,
-                                          style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold),
-                                        )
-                                      ],
-                                    ),
+      appBar: AppBar(
+        title: Text("PokeApp"),
+        backgroundColor: Colors.cyan,
+      ),
+      body: pokeHub == null
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : GridView.count(
+              crossAxisCount: 2,
+              children: pokeHub!.pokemon
+                  .map((poke) => Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => PokeDetail(
+                                          pokemon: poke,
+                                        )));
+                          },
+                          child: Hero(
+                            tag: poke.img!,
+                            child: Card(
+                              elevation: 3.0,
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: <Widget>[
+                                  Container(
+                                    height: 100.0,
+                                    width: 100.0,
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image: NetworkImage(poke.img!))),
                                   ),
-                                ),
+                                  Text(
+                                    poke.name!,
+                                    style: TextStyle(
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  )
+                                ],
                               ),
-                            ))
-                        .toList(),
-                  );
-                }
-              case ConnectionState.none:
-                {
-                  return (Center(
-                    child: Text("No data available"),
-                  ));
-                }
-              case ConnectionState.waiting:
-                {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-              case ConnectionState.active:
-                // TODO: Handle this case.
-
-                break;
-            }
-            return Center(
-              child: Text(""),
-            );
-          },
-        ));
+                            ),
+                          ),
+                        ),
+                      ))
+                  .toList(),
+            ),
+    );
   }
 }
